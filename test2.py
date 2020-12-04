@@ -1,17 +1,39 @@
-"""
-STRUCTURED ENGLISH
+def main():
+    #Open File
+    gradesFile = {}
 
-Open file 'final.txt'
-Read through each line of the file
-Create a list with each grade found on every line
-Get the length of the list and print it to the user
+    try:
+        gradesFile = open('Final.txt', 'r')
+    except FileNotFoundError:
+        print("Error: Could not find scores file, please check that it exists in the current directory")
+        exit()
 
-Find sum of list
-Divide sum by length and print result (the average) to user
+    tempList = [line.rstrip() for line in gradesFile]
+    gradesList = [int(i) for i in tempList]
 
-Iterate through list and find # of items above our found average
-Divide this count by the total length of list and print result to user.
-This is the % of scores above the average
+    #Number of scores
+    listLength = len(gradesList)
+    #Protect against ZeroDivisionError
+    if listLength > 0:
+        print("Number of Grades:", listLength)
 
-END STRUCTURED ENGLISH
-"""
+        #Average
+        gradesSum = sum(gradesList)
+        average = gradesSum / listLength
+        print(("Average Grade: {0:.2f}").format(average))
+
+        calculate_percent_above_average(gradesList, listLength, average)
+    else:
+        print("Error: Scores file must not be empty.")
+        exit()
+
+def calculate_percent_above_average(gradesList, listLength, average):
+    counter = 0
+    for i, val in enumerate(gradesList):
+        if val > average:
+            counter += 1
+    
+    percentAbove = counter/listLength
+    print(("Percent of grades above the average: {0:.2%}").format(percentAbove))
+
+main()
